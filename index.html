@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="es" class="">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Cristhian Fernandez - Portfolio & SWOT Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#135bec',
+                    },
+                    fontFamily: {
+                        manrope: ['Manrope', 'sans-serif'],
+                        jakarta: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'md': '0.375rem',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        :root {
+            --primary: #135bec;
+            --bg-page: #F9FAFB;
+            --text-main: #1F2937;
+            --text-muted: #6B7280;
+            --fortaleza-accent: #3b82f6;
+            --debilidad-accent: #f97316;
+            --oportunidad-accent: #10b981;
+            --amenaza-accent: #ef4444;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+            --depth-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+            --premium-shadow: 0 20px 40px -15px rgba(19, 91, 236, 0.15);
+            --card-border-gradient: linear-gradient(135deg, rgba(19, 91, 236, 0.1), rgba(59, 130, 246, 0.1));
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #FFFFFF;
+            color: var(--text-main);
+        }
+
+        /* Screen 1 Dashboard Specific Styles */
+        .dashboard-bg {
+            background-color: #F9FAFB;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(19, 91, 236, 0.03) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.03) 0px, transparent 50%);
+        }
+
+        .container-custom {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .glass-card {
+            background: #FFFFFF;
+            box-shadow: var(--depth-shadow);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fortalezas-glow { box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.1); }
+        .debilidades-glow { box-shadow: 0 20px 40px -10px rgba(249, 115, 22, 0.1); }
+        .oportunidades-glow { box-shadow: 0 20px 40px -10px rgba(16, 185, 129, 0.1); }
+        .amenazas-glow { box-shadow: 0 20px 40px -10px rgba(239, 68, 68, 0.1); }
+
+        .mini-card {
+            background: #F3F4F6;
+            border: 1px solid transparent;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mini-card:hover {
+            transform: translateY(-2px);
+            background: #FFFFFF;
+            border-color: rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .progress-bar-bg { background: rgba(0,0,0,0.05); height: 4px; border-radius: 4px; margin-top: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 4px; }
+
+        /* Screen 2 Portfolio Specific Styles */
+        .hero-bg {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.94)), url(https://lh3.googleusercontent.com/aida-public/AB6AXuCPNYK8j_fOscg4I5fiQU-oz5ZUN52LbcbvUA1FaUZOTXryX3uyC574PJLfYlM3N-81lBZMafSpIkp3SHRmR_5NTsVrEuKGJbVgUww-7B3wGy6im7GhhBMO0pEInMWnfAYKaD1g2zU2oGitsX-0SfYSPiEYU_BJutcj_Z8Zen2fd3KN-5ajO5QC0GFtuDwlR-WxQht3s1-yuMsu15OIGQGGnjN-TrtELHtgyf9azK-fZNj4Z5u2R5iGa9h6rMcQk8XpO3i_VL5RcNc);
+            background-size: cover;
+            background-position: center;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .premium-button {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 14px 0 rgba(19, 91, 236, 0.25);
+        }
+
+        .premium-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px -5px rgba(19, 91, 236, 0.4);
+        }
+
+        .glass-button {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(19, 91, 236, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .glass-button:hover {
+            background: rgba(19, 91, 236, 0.05);
+            border-color: rgba(19, 91, 236, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .project-card {
+            background: white;
+            position: relative;
+            border-radius: 32px;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+        }
+
+        .project-card::before {
+            content: "";
+            position: absolute;
+            top: -1px;
+            bottom: -1px;
+            left: -1px;
+            right: -1px;
+            z-index: -1;
+            border-radius: 32px;
+            background: var(--card-border-gradient);
+            opacity: 0.5;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.08);
+        }
+
+        .mockup-3d {
+            transform: perspective(1000px) rotateY(-8deg) rotateX(4deg);
+            transition: transform 0.6s ease;
+            filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.12));
+        }
+
+        .project-card:hover .mockup-3d {
+            transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
+        }
+
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: -8px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 4px solid white;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+            z-index: 10;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: #E5E7EB;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body class="antialiased font-manrope">
+    <div id="root"></div>
+
+    <!-- React Dependencies -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/history@5/umd/history.development.js"></script>
+    <script src="https://unpkg.com/react-router@6.3.0/umd/react-router.development.js"></script>
+    <script src="https://unpkg.com/react-router-dom@6.3.0/umd/react-router-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { createRoot } = ReactDOM;
+        const { MemoryRouter, Routes, Route, Link, useNavigate, useLocation } = ReactRouterDOM;
+
+        // Shared Components
+        const Navbar = ({ isDashboard }) => {
+            const navigate = useNavigate();
+            const location = useLocation();
+
+            return (
+                <header className="sticky top-0 z-50 glass-nav">
+                    <div className="container-custom px-6 h-20 flex items-center justify-between">
+                        <div className="flex items-center gap-4 cursor-pointer" onClick={() => navigate('/')}>
+                            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-blue-100">
+                                <span className="material-symbols-outlined text-white">
+                                    {isDashboard ? 'dashboard_customize' : 'terminal'}
+                                </span>
+                            </div>
+                            <div>
+                                <h1 className="text-[#1F2937] font-extrabold text-base leading-none tracking-tight">
+                                    {isDashboard ? 'FODA Dashboard' : 'Cristhian Fernandez'}
+                                </h1>
+                                <p className="text-[10px] text-primary font-bold tracking-widest uppercase mt-1">
+                                    {isDashboard ? 'Cristhian Fernandez' : 'Ingeniero Informático'}
+                                </p>
+                            </div>
+                        </div>
+
+                        {!isDashboard ? (
+                            <nav className="hidden lg:flex items-center gap-8">
+                                <a className="text-sm font-bold text-gray-500 hover:text-primary transition-colors" href="#inicio">Inicio</a>
+                                <a className="text-sm font-bold text-gray-500 hover:text-primary transition-colors" href="#proyectos">Proyectos</a>
+                                <a className="text-sm font-bold text-gray-500 hover:text-primary transition-colors" href="#skills">Habilidades</a>
+                                <a className="text-sm font-bold text-gray-500 hover:text-primary transition-colors" href="#experiencia">Trayectoria</a>
+                                <Link className="text-sm font-bold text-gray-500 hover:text-primary transition-colors flex items-center gap-1" to="/dashboard">
+                                    Análisis FODA
+                                </Link>
+                            </nav>
+                        ) : (
+                            <nav className="hidden md:flex items-center gap-8">
+                                <Link className="text-sm font-bold text-primary" to="/dashboard">Análisis</Link>
+                                <a className="text-sm font-bold text-gray-500 hover:text-primary transition-colors" href="#">Estrategia</a>
+                                <a className="text-sm font-bold text-gray-500 hover:text-primary transition-colors" href="#">Métricas</a>
+                                <Link className="text-sm font-bold text-gray-500 hover:text-primary transition-colors" to="/">Portfolio</Link>
+                            </nav>
+                        )}
+
+                        <div className="flex items-center gap-4">
+                            {!isDashboard && (
+                                <a className="hidden md:block premium-button bg-primary text-white px-6 py-2.5 rounded-full text-sm font-bold" href="#contacto">
+                                    Contactar
+                                </a>
+                            )}
+                            <div
+                                className="w-10 h-10 rounded-full bg-gray-100 bg-cover bg-center border border-gray-200 shadow-sm"
+                                style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuD_Jwr5YGcT1D21AOj8ZQliELKym_W5XG4n9E5tFUAFfHvK8kUDAmdEHilP7drtv16_HW6tKhtD9pJnf8ulbsacc70TJVu51FssnrEEzDNxSG1MNL-DdsQS5lI9RrP9vJjrlIRRQMDeuy4AQ3IRYcFGSwqg-3riGYI8nriqaNoZXGr790PYFVjaDLJ6qi9tmVCX4TyfI6ES-ltfwpHn6PC1-fXgYhElXviFxqxwJizbY2T5fbxX1lqCg9xQFt6PqK585Nd0FXLS6aU')" }}
+                            ></div>
+                        </div>
+                    </div>
+                </header>
+            );
+        };
+
+        const Footer = ({ isDashboard }) => (
+            <footer className={`py-12 border-t border-gray-100 mt-12 ${isDashboard ? 'container-custom px-6' : ''}`}>
+                <div className={`${!isDashboard ? 'container-custom px-6' : ''} flex flex-col md:flex-row justify-between items-center gap-8`}>
+                    <div className="text-center md:text-left">
+                        <p className="text-base text-gray-600 font-bold tracking-tight">
+                            © 2025 Cristhian Fernandez. {isDashboard ? 'Planificación estratégica White Edition.' : 'Crafted for Excellence.'}
+                        </p>
+                        {!isDashboard && (
+                            <p className="text-[10px] text-gray-400 mt-2 uppercase tracking-widest font-bold">Ingeniería de Software & Arquitecturas Web</p>
+                        )}
+                    </div>
+                    <div className="flex gap-8">
+                        <a className="text-gray-400 hover:text-primary transition-all hover:scale-110" href="#"><span className="material-symbols-outlined">{isDashboard ? 'share' : 'code'}</span></a>
+                        <a className="text-gray-400 hover:text-primary transition-all hover:scale-110" href="#"><span className="material-symbols-outlined">{isDashboard ? 'picture_as_pdf' : 'share'}</span></a>
+                        <a className="text-gray-400 hover:text-primary transition-all hover:scale-110" href="#"><span className="material-symbols-outlined">{isDashboard ? 'settings' : 'workspace_premium'}</span></a>
+                    </div>
+                </div>
+            </footer>
+        );
+
+        // Screen Components
+        const PortfolioPage = () => {
+            const navigate = useNavigate();
+
+            return (
+                <div className="bg-white min-h-screen">
+                    <Navbar isDashboard={false} />
+                    <main>
+                        {/* Hero Section */}
+                        <section className="hero-bg relative" id="inicio">
+                            <div className="container-custom py-24 px-6 flex flex-col md:flex-row items-center gap-16">
+                                <div className="flex-1 text-center md:text-left">
+                                    <span className="inline-block px-4 py-1.5 bg-blue-50 text-primary rounded-full text-xs font-bold tracking-widest uppercase mb-6">Disponible para Proyectos de Impacto</span>
+                                    <h2 className="text-6xl lg:text-7xl font-extrabold text-[#111827] tracking-tight leading-[1.1] mb-8">
+                                        Ingeniero Informático & <span className="text-primary">Arquitecto de Software</span>
+                                    </h2>
+                                    <p className="text-xl text-gray-600 max-w-2xl font-medium leading-relaxed mb-10">
+                                        Construyendo soluciones escalables con arquitecturas modernas y una visión pragmática orientada a resultados empresariales reales.
+                                    </p>
+                                    <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+                                        <a href="#proyectos" className="premium-button bg-primary text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-2">
+                                            Ver Proyectos <span className="material-symbols-outlined">arrow_forward</span>
+                                        </a>
+                                        <button
+                                            onClick={() => navigate('/dashboard')}
+                                            className="glass-button text-primary px-8 py-4 rounded-2xl font-bold flex items-center gap-2"
+                                        >
+                                            <span className="material-symbols-outlined text-xl">analytics</span> Ver Análisis FODA
+                                        </button>
+                                        <button className="secondary-button bg-white text-gray-700 border border-gray-200 px-8 py-4 rounded-2xl font-bold">
+                                            Descargar CV
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="flex-1 relative">
+                                    <div className="relative w-full aspect-[4/5] max-w-md mx-auto group">
+                                        <div className="absolute -inset-4 bg-blue-50 rounded-[48px] rotate-3 transition-transform group-hover:rotate-6 duration-500"></div>
+                                        <div className="absolute inset-0 bg-white rounded-[40px] overflow-hidden shadow-2xl border-4 border-white">
+                                            <img alt="Cristhian Fernandez Professional Portrait" className="w-full h-full object-cover" src="./profile_image.png" />
+                                            <div className="absolute bottom-6 left-6 right-6 bg-white/95 backdrop-blur-md p-5 rounded-3xl border border-white/50 shadow-lg">
+                                                <p className="text-xs font-bold text-primary uppercase tracking-widest mb-1">Ubicación Actual</p>
+                                                <p className="text-sm font-bold text-gray-900">Madrid, España</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Stack Section */}
+                        <section className="py-24 bg-white" id="skills">
+                            <div className="container-custom px-6 text-center mb-16">
+                                <h3 className="text-3xl font-extrabold text-gray-900 mb-4 tracking-tight">Stack Tecnológico</h3>
+                                <p className="text-gray-500">Logotipos oficiales y herramientas de nivel empresarial.</p>
+                            </div>
+                            <div className="container-custom px-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+                                {[
+                                    { name: "Python", role: "Desarrollo Backend", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDDturgOYjnvVkZkmMJ49NzdlHgY0djrNCiVAE3rFZCGLiydPqBCkNc_2bnKgTOeGz6rKro7FnBc6wCTEemOPWs7pnUCK8BLu_oZ3-IEVmYWJfsBb1jpif7g8vHpo5mlMkDkb8tZWWMsOIUxu7kJL-O1vSRp280DxQ15uwD8FtKnLfutcn2TedfiRq_jzxDMzFg4swqbGcJG6DX977Cz1M0jlRRkVmR8_uQttn4Ywk5HYvpLaR4kW4ejhweBk5fljd72rGnJflHmBI" },
+                                    { name: "React", role: "Frontend Premium", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuC6XTCQ5vxqZzbyqnXcHnKGRXaWOs4zUEZ3TT2FbViPzW2xcqFbOXDEpNHkhcT_qJWyjX0frCjpWdqjS9hVc2UxGoVcu7OO8pY3ptfkTt0VtEiTYoQ1Y-ttIW7QIWDr586dCjHTltqF_rjui8rlOLCDI_salXVwkNoXAxr7pZunpvAOmPJyHrR_PMhY0lwuFjYydT2a3m2IF7FaRGBvt2Kl0n5iCDjDVVGL7_KqOKtMLzUFUQcIuC27OQ9T72o-pYiRxRLGgSHsDAM" },
+                                    { name: "AWS", role: "Infraestructura Cloud", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCBGkjmrPm5pwkqKsO_P5jJwchmZJxISHbarimT0hXT059lgxBj-rubYAFOMCd3wNZxrGJ7RLAA8bOw4M1dZkYjEMibjKiSq53nu5GBvpqQznVQYa45kQu_5Th7XrKRPnuynwL5BMEONv98Rtw0oNfndKRClzJP_f2hRcbelRlz-Jr_u9MM3kJwKPMff7TMzHp2uXBQZanclSaQN6YLERe9Ip3VUN0CFvbjRAK47QScJxbkyZFXQPLrp_e6ZmXzWeylaSu7I-9ZF1E" },
+                                    { name: "TypeScript", role: "Tipado Robusto", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBQ3H4U3ISg0Ca88UfDo75x4hMymRzqBS0n7z275aMZSYxwMV0Rz-9trq6_Zd367HlVxIOaWR5_0WN68xSGcut8wwYgOXnht3zwEmOxd9JDXW782exJbntDpZ6w-fFHwp26Ol-ZakDs6f-BsL-LldjIBJJIR483RMq4f4iMr4aN1ZG1kqeK3M1kxBSyGbrmNH6i8RelGKxvtBFvjZO9KdWPwrB08YP60viXAT5lDTY2W_T2k_WpCCMb7JTmKt3K8nCFDBQLLPbSJbQ" },
+                                    { name: "VS Code", role: "Entorno de Desarrollo", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCSEYSQ47eNuaG1GOLaABqYotUvMjcp5LJjLoQjkdrBWFRc5w286-1LfyLpJEMNfdVeEAar8OH1VErsLmlUquPeMqseyy5ow8-R2oqPBKdANvYtfb1g1b48ktq6xeOOAeD0dIuDQSaEurc5RRgZ_AhGHm9xhaplLaKjp1YYcmH2QzTAYjxpipZxbhR6G2pxNxH6HBy8dK7ZFTlniL2195SirIqDIfj9ciIsBYwhOuUndVSAWmV4UBteVbsiafzy6QWWuFD9D2Clzsw" }
+                                ].map((tech, idx) => (
+                                    <div key={idx} className="project-card p-8 text-center group">
+                                        <div className="w-16 h-16 mx-auto mb-5 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all duration-300">
+                                            <img alt={tech.name} className="w-12 h-12 object-contain rounded-lg" src={tech.img} />
+                                        </div>
+                                        <h4 className="font-bold text-gray-900 text-lg">{tech.name}</h4>
+                                        <p className="text-xs text-gray-400 mt-2 uppercase tracking-widest font-bold">{tech.role}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+
+                        {/* Projects Portfolio */}
+                        <section className="py-24 bg-gray-50/50" id="proyectos">
+                            <div className="container-custom px-6">
+                                <div className="flex items-end justify-between mb-16">
+                                    <div>
+                                        <h3 className="text-4xl font-extrabold text-gray-900 mb-3 tracking-tight">Portfolio de Proyectos</h3>
+                                        <p className="text-gray-500 text-lg">Capturas reales de interfaces y dashboards de alta fidelidad.</p>
+                                    </div>
+                                    <a className="text-primary font-bold flex items-center gap-2 hover:translate-x-1 transition-transform" href="#">
+                                        Ver Galería Completa <span className="material-symbols-outlined">north_east</span>
+                                    </a>
+                                </div>
+                                <div className="grid grid-cols-12 gap-8">
+                                    {/* Main Project */}
+                                    <div className="col-span-12 lg:col-span-8 project-card overflow-hidden flex flex-col md:flex-row min-h-[500px]">
+                                        <div className="flex-1 p-12 flex flex-col justify-center bg-white z-10">
+                                            <div className="flex gap-2 mb-6">
+                                                <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-blue-50 text-primary uppercase tracking-widest">SaaS Enterprise</span>
+                                            </div>
+                                            <h4 className="text-3xl font-black text-gray-900 mb-5">Analytics Core Pro</h4>
+                                            <p className="text-gray-500 mb-8 leading-relaxed">Dashboard interactivo para la visualización de métricas de negocio en tiempo real, construido con React y Highcharts.</p>
+                                            <div className="flex flex-wrap gap-3">
+                                                {["React", "PostgreSQL", "Tailwind"].map(tag => (
+                                                    <span key={tag} className="tech-tag-vibrant px-4 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-600">{tag}</span>
+                                                ))}
+                                            </div>
+                                            <div className="mt-10">
+                                                <button className="premium-button bg-primary text-white px-6 py-3 rounded-xl font-bold text-sm">Ver Proyecto</button>
+                                            </div>
+                                        </div>
+                                        <div className="flex-1 bg-gray-50 p-8 flex items-center justify-center">
+                                            <div className="mockup-3d w-full">
+                                                <img alt="Real Dashboard Interface" className="project-image w-full rounded-xl shadow-2xl border border-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOdrRpgsPXRS_QKbA67JSS2tWQlGaD4qAMY2G2GEYv5YhKGozk9csh2gF55EN2pCLONnGkFp_5w-Plo5ruN9hGEc2plq1aSALkqKYMNcJrzw1HK5BB6YJpjC1Fj-7Co2sbabJ2ZPH4kqY0ZuOIpImnoyP-SDX1ET7u0JsnPqCfqoWJ7qQoPXJNNFfzeFM0mnG8TFv5LIIGTSTWcTyA5D8ZzLsInoLGRlXCGysLw9S8YmIZeTXOquVyEzDcfENFYgqEqS8LoX2uwyo" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/* Sub projects */}
+                                    <div className="col-span-12 md:col-span-6 lg:col-span-4 project-card p-10 flex flex-col bg-white">
+                                        <div className="mb-8 mockup-3d">
+                                            <img alt="Mobile App UI" className="project-image w-full aspect-[4/3] object-cover rounded-2xl shadow-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBt_hYFzTinQ3qkGgO9TnbHaOV40w_5uEGwzWRM9a5QZFROmzOUFPOKIEP4xMlBFAcZUFOl1VaKC9qmo0tySQXFCuzDzCCwlNwc3FvmaSVx2bv4YoRWc-ZtzNZLWCOc8Z7Y437mvWyqnKvcPKrqZE6dxWv9RiiYG4REsf90OrCw0cFj93d43vk3HuVdOuN6MQHyHhgm4BZudJsl0Ca8EXCbbdMsw5h22BB5pQF7Q4icZMBRZlO5gWJ47N8SRvU5DU_F3trHpFX8Ic" />
+                                        </div>
+                                        <h4 className="text-xl font-bold text-gray-900 mb-3">Fintech Mobile App</h4>
+                                        <p className="text-sm text-gray-500 mb-8 leading-relaxed">Interfaz de banca móvil diseñada para una experiencia de usuario fluida y segura.</p>
+                                        <div className="mt-auto flex flex-wrap gap-2">
+                                            <span className="tech-tag-vibrant px-3 py-1 rounded-full text-[10px] font-bold bg-gray-100 text-gray-600">React Native</span>
+                                            <span className="tech-tag-vibrant px-3 py-1 rounded-full text-[10px] font-bold bg-gray-100 text-gray-600">Firebase</span>
+                                        </div>
+                                    </div>
+                                    <div className="col-span-12 md:col-span-6 lg:col-span-4 project-card p-10 flex flex-col bg-white">
+                                        <div className="mb-8 mockup-3d">
+                                            <img alt="VS Code Snippet" className="project-image w-full aspect-[4/3] object-cover rounded-2xl shadow-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB73oaSmnjhnfMoOdvUh9L7FH4h9_lEyYWIqUaKONTedW9zM1AllYPdklnd51g0AEY2HcJe5KSr6k-ZYI5C_-rqPPDfk1xtm2UVR4GzuqdyVlMA2-dZ0oZ-1puUdUILVBESMQwFnw2MDzegaL4bgbPNkjNmS14GkCLdE3FTKZRMu-Gt7T76g_tSoJB2AKAeaiIwWoNePRyE40UaLIzf-F2lKEk8Nsn_AJK3nBgLA_aAM7-Qa6MMmKNIhulXE9kbwuHDHn9VDuUDaY4" />
+                                        </div>
+                                        <h4 className="text-xl font-bold text-gray-900 mb-3">Arquitectura Microservicios</h4>
+                                        <p className="text-sm text-gray-500 mb-8 leading-relaxed">Implementación de orquestadores de servicios utilizando Clean Architecture en Node.js.</p>
+                                        <div className="mt-auto flex flex-wrap gap-2">
+                                            <span className="tech-tag-vibrant px-3 py-1 rounded-full text-[10px] font-bold bg-gray-100 text-gray-600">Node.js</span>
+                                            <span className="tech-tag-vibrant px-3 py-1 rounded-full text-[10px] font-bold bg-gray-100 text-gray-600">Docker</span>
+                                        </div>
+                                    </div>
+                                    {/* Marketplace project */}
+                                    <div className="col-span-12 lg:col-span-8 project-card overflow-hidden flex flex-col md:flex-row-reverse min-h-[500px]">
+                                        <div className="flex-1 p-12 flex flex-col justify-center bg-white z-10">
+                                            <div className="flex gap-2 mb-6">
+                                                <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 uppercase tracking-widest">E-commerce Premium</span>
+                                            </div>
+                                            <h4 className="text-3xl font-black text-gray-900 mb-5">Digital Marketplace UI</h4>
+                                            <p className="text-gray-500 mb-8 leading-relaxed">Diseño y desarrollo de una plataforma de comercio electrónico optimizada para dispositivos táctiles.</p>
+                                            <div className="flex flex-wrap gap-3">
+                                                <span className="tech-tag-vibrant px-4 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-600">Next.js</span>
+                                                <span className="tech-tag-vibrant px-4 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-600">Stripe API</span>
+                                            </div>
+                                            <div className="mt-10">
+                                                <button className="premium-button bg-primary text-white px-6 py-3 rounded-xl font-bold text-sm">Explorar Solución</button>
+                                            </div>
+                                        </div>
+                                        <div className="flex-1 bg-gray-50 p-8 flex items-center justify-center">
+                                            <div className="mockup-3d w-full">
+                                                <img alt="iPad Interface Mockup" className="project-image w-full rounded-2xl shadow-2xl border-4 border-gray-900" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1tu7fm5zq4FJjP7CLubtn-nvOwsB8lpkViLlRqIrRovBp0rUX-UphrhfpX7JJUHxer9nNIW64pG80rZqrdueGvdQQ7CKDrB1Gt9eY25YBjHYHLab2LizF67WtOcKxt7x5Vb1OTxsy-6jWutU8Nyev7B0Clwxd3l_hlWc-wz-gIZp_LXRuA-O18nCwQVQXygvlTKwE4mqlgWyISZUzmZ46VMXBGY5XwT8qQXJVr469d97e4onbNliRAEuezy7OJS33yYcv84pNTjo" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Experience */}
+                        <section className="py-24" id="experiencia">
+                            <div className="container-custom px-6">
+                                <div className="flex items-center gap-5 mb-16">
+                                    <div className="h-12 w-2 bg-primary rounded-full"></div>
+                                    <h3 className="text-4xl font-extrabold text-gray-900 tracking-tight">Experiencia Profesional</h3>
+                                </div>
+                                <div className="relative ml-4 pl-12 space-y-16">
+                                    <div className="timeline-line"></div>
+                                    <div className="timeline-item relative">
+                                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                                            <div>
+                                                <h4 className="text-2xl font-bold text-gray-900">Senior Solutions Architect</h4>
+                                                <p className="text-primary font-bold text-lg">Tech Global Services</p>
+                                            </div>
+                                            <span className="px-5 py-2 bg-blue-50 text-blue-700 rounded-full text-xs font-extrabold whitespace-nowrap shadow-sm border border-blue-100">2023 - Presente</span>
+                                        </div>
+                                        <p className="text-gray-600 leading-relaxed max-w-4xl text-lg">
+                                            Liderazgo técnico en la definición de arquitecturas escalables basadas en la nube. Optimización de procesos CI/CD y mejora del rendimiento de aplicaciones críticas en producción.
+                                        </p>
+                                    </div>
+                                    <div className="timeline-item relative">
+                                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                                            <div>
+                                                <h4 className="text-2xl font-bold text-gray-900">Full Stack Engineer</h4>
+                                                <p className="text-primary font-bold text-lg">Innovate Software</p>
+                                            </div>
+                                            <span className="px-5 py-2 bg-gray-50 text-gray-500 rounded-full text-xs font-extrabold whitespace-nowrap border border-gray-200">2020 - 2023</span>
+                                        </div>
+                                        <p className="text-gray-600 leading-relaxed max-w-4xl text-lg">
+                                            Desarrollo integral de aplicaciones web complejas utilizando el stack MERN. Implementación de pruebas automatizadas y aseguramiento de la calidad del código.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* SWOT CTA */}
+                        <section className="py-24 bg-blue-50/30" id="foda">
+                            <div className="container-custom px-6 text-center">
+                                <h3 className="text-4xl font-extrabold text-gray-900 mb-6 tracking-tight">Análisis Estratégico</h3>
+                                <p className="text-gray-600 max-w-2xl mx-auto mb-10 text-lg">
+                                    Explora mi análisis FODA personal para conocer en profundidad mis fortalezas, oportunidades, debilidades y amenazas desde una perspectiva profesional técnica.
+                                </p>
+                                <button
+                                    onClick={() => navigate('/dashboard')}
+                                    className="premium-button bg-primary text-white px-10 py-4 rounded-2xl font-bold text-lg inline-flex items-center gap-2"
+                                >
+                                    Ver Análisis FODA <span className="material-symbols-outlined">dashboard_customize</span>
+                                </button>
+                            </div>
+                        </section>
+
+                        {/* Contact Form */}
+                        <section className="py-24" id="contacto">
+                            <div className="container-custom px-6">
+                                <div className="project-card p-10 md:p-20 flex flex-col lg:flex-row gap-20">
+                                    <div className="lg:w-1/3">
+                                        <h3 className="text-4xl font-extrabold text-gray-900 mb-8 tracking-tight leading-tight">¿Damos el siguiente paso juntos?</h3>
+                                        <p className="text-gray-500 mb-12 text-lg leading-relaxed">Si buscas elevar tu producto con tecnología robusta y una ejecución impecable, hablemos de tu próximo reto.</p>
+                                        <div className="space-y-8">
+                                            <div className="flex items-center gap-5">
+                                                <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-primary shadow-sm border border-blue-100">
+                                                    <span className="material-symbols-outlined text-2xl">mail</span>
+                                                </div>
+                                                <div>
+                                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Email Profesional</p>
+                                                    <p className="font-bold text-gray-900 text-lg">contacto@cristhian.dev</p>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-5">
+                                                <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-primary shadow-sm border border-blue-100">
+                                                    <span className="material-symbols-outlined text-2xl">location_on</span>
+                                                </div>
+                                                <div>
+                                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Base de Operaciones</p>
+                                                    <p className="font-bold text-gray-900 text-lg">Madrid, España</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="lg:w-2/3">
+                                        <form className="grid grid-cols-1 md:grid-cols-2 gap-8" onSubmit={(e) => e.preventDefault()}>
+                                            <div className="space-y-3">
+                                                <label className="text-sm font-bold text-gray-700 ml-1">Nombre Completo</label>
+                                                <input className="w-full bg-gray-50 border-gray-200 rounded-2xl p-4 focus:bg-white focus:border-primary focus:ring-4 focus:ring-blue-100 transition-all outline-none" placeholder="Tu nombre" type="text" />
+                                            </div>
+                                            <div className="space-y-3">
+                                                <label className="text-sm font-bold text-gray-700 ml-1">Correo Electrónico</label>
+                                                <input className="w-full bg-gray-50 border-gray-200 rounded-2xl p-4 focus:bg-white focus:border-primary focus:ring-4 focus:ring-blue-100 transition-all outline-none" placeholder="tu@email.com" type="email" />
+                                            </div>
+                                            <div className="md:col-span-2 space-y-3">
+                                                <label className="text-sm font-bold text-gray-700 ml-1">Mensaje</label>
+                                                <textarea className="w-full bg-gray-50 border-gray-200 rounded-2xl p-4 focus:bg-white focus:border-primary focus:ring-4 focus:ring-blue-100 transition-all outline-none" placeholder="Cuéntame sobre tu proyecto..." rows="5"></textarea>
+                                            </div>
+                                            <div className="md:col-span-2">
+                                                <button className="premium-button w-full md:w-auto bg-primary text-white px-12 py-5 rounded-2xl font-bold text-lg" type="submit">
+                                                    Enviar Mensaje
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </main>
+                    <Footer isDashboard={false} />
+                </div>
+            );
+        };
+
+        const DashboardPage = () => {
+            return (
+                <div className="dashboard-bg min-h-screen">
+                    <Navbar isDashboard={true} />
+                    <main className="container-custom py-12 px-6">
+                        <div className="mb-16 text-center">
+                            <h2 className="text-5xl font-extrabold text-[#1F2937] tracking-tight mb-4">Matriz FODA <span className="text-primary">2025</span></h2>
+                            <p className="text-gray-500 max-w-2xl mx-auto text-lg font-medium">Análisis estratégico personal con enfoque en innovación y tecnología.</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+                            {/* Fortalezas */}
+                            <div className="glass-card fortalezas-glow rounded-[40px] p-10">
+                                <div className="flex items-center gap-4 mb-10">
+                                    <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center">
+                                        <span className="material-symbols-outlined text-4xl text-blue-500">verified</span>
+                                    </div>
+                                    <h3 className="text-3xl font-black text-[#1F2937]">Fortalezas</h3>
+                                </div>
+                                <div className="space-y-4">
+                                    {[
+                                        { icon: 'school', title: 'Excelencia Académica', desc: 'Sólida base teórica y compromiso con certificaciones de alto nivel.' },
+                                        { icon: 'terminal', title: 'Perfil Tecnológico', desc: 'Dominio de stacks modernos y arquitecturas de software escalables.' },
+                                        { icon: 'explore', title: 'Explorador', desc: 'Curiosidad innata por herramientas de IA y tendencias emergentes.' }
+                                    ].map((item, i) => (
+                                        <div key={i} className="mini-card rounded-2xl p-5 flex items-start gap-4 border-l-4 border-l-transparent hover:border-l-blue-500">
+                                            <div className="bg-blue-500 p-2.5 rounded-xl shrink-0">
+                                                <span className="material-symbols-outlined text-white text-xl">{item.icon}</span>
+                                            </div>
+                                            <div>
+                                                <h4 className="font-bold text-[#1F2937] text-lg">{item.title}</h4>
+                                                <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Debilidades */}
+                            <div className="glass-card debilidades-glow rounded-[40px] p-10">
+                                <div className="flex items-center gap-4 mb-10">
+                                    <div className="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center">
+                                        <span className="material-symbols-outlined text-4xl text-orange-500">psychology_alt</span>
+                                    </div>
+                                    <h3 className="text-3xl font-black text-[#1F2937]">Debilidades</h3>
+                                </div>
+                                <div className="space-y-4">
+                                    {[
+                                        { icon: 'forum', title: 'Gestión Emocional', desc: 'Necesidad de fortalecer la comunicación asertiva en equipos.', progress: '75%' },
+                                        { icon: 'hourglass_empty', title: 'Ciclo de Aburrimiento', desc: 'Pérdida de interés en tareas operativas una vez resuelto el reto.', progress: '60%' },
+                                        { icon: 'speed', title: 'Ansiedad por el Ritmo', desc: 'Dificultad para gestionar la velocidad extrema del cambio.', progress: '45%' }
+                                    ].map((item, i) => (
+                                        <div key={i} className="mini-card rounded-2xl p-5 flex items-start gap-4 border-l-4 border-l-transparent hover:border-l-orange-500">
+                                            <div className="bg-orange-500 p-2.5 rounded-xl shrink-0">
+                                                <span className="material-symbols-outlined text-white text-xl">{item.icon}</span>
+                                            </div>
+                                            <div className="w-full">
+                                                <h4 className="font-bold text-[#1F2937] text-lg">{item.title}</h4>
+                                                <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+                                                <div className="progress-bar-bg"><div className="progress-fill bg-orange-500" style={{ width: item.progress }}></div></div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Oportunidades */}
+                            <div className="glass-card oportunidades-glow rounded-[40px] p-10">
+                                <div className="flex items-center gap-4 mb-10">
+                                    <div className="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center">
+                                        <span className="material-symbols-outlined text-4xl text-emerald-500">rocket_launch</span>
+                                    </div>
+                                    <h3 className="text-3xl font-black text-[#1F2937]">Oportunidades</h3>
+                                </div>
+                                <div className="space-y-4">
+                                    {[
+                                        { icon: 'auto_awesome', title: 'Hiper-eficiencia (IA)', desc: 'Uso de IA para multiplicar la productividad personal.', badge: 'ALTO IMPACTO' },
+                                        { icon: 'storefront', title: 'Nicho PYMES', desc: 'Digitalización con soluciones tecnológicas personalizadas.', badge: null },
+                                        { icon: 'groups', title: 'Liderazgo de Comunidad', desc: 'Participación activa en redes de networking técnico.', badge: 'ALTO IMPACTO' }
+                                    ].map((item, i) => (
+                                        <div key={i} className="mini-card rounded-2xl p-5 flex items-start gap-4 border-l-4 border-l-transparent hover:border-l-emerald-500">
+                                            <div className="bg-emerald-500 p-2.5 rounded-xl shrink-0">
+                                                <span className="material-symbols-outlined text-white text-xl">{item.icon}</span>
+                                            </div>
+                                            <div className="flex-1">
+                                                <div className="flex items-center justify-between mb-1">
+                                                    <h4 className="font-bold text-[#1F2937] text-lg">{item.title}</h4>
+                                                    {item.badge && <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100">{item.badge}</span>}
+                                                </div>
+                                                <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Amenazas */}
+                            <div className="glass-card amenazas-glow rounded-[40px] p-10">
+                                <div className="flex items-center gap-4 mb-10">
+                                    <div className="w-14 h-14 bg-red-50 rounded-2xl flex items-center justify-center">
+                                        <span className="material-symbols-outlined text-4xl text-red-500">warning</span>
+                                    </div>
+                                    <h3 className="text-3xl font-black text-[#1F2937]">Amenazas</h3>
+                                </div>
+                                <div className="space-y-4">
+                                    {[
+                                        { icon: 'router', title: 'Infraestructura', desc: 'Inestabilidad en servicios de conectividad en entornos remotos.' },
+                                        { icon: 'group_add', title: 'Competencia', desc: 'Nuevos perfiles nativos digitales con alta adaptabilidad.' },
+                                        { icon: 'history_toggle_off', title: 'Obsolescencia', desc: 'Ritmo acelerado de depreciación del conocimiento técnico.' }
+                                    ].map((item, i) => (
+                                        <div key={i} className="mini-card rounded-2xl p-5 flex items-start gap-4 border-l-4 border-l-transparent hover:border-l-red-500">
+                                            <div className="bg-red-500 p-2.5 rounded-xl shrink-0">
+                                                <span className="material-symbols-outlined text-white text-xl">{item.icon}</span>
+                                            </div>
+                                            <div>
+                                                <h4 className="font-bold text-[#1F2937] text-lg">{item.title}</h4>
+                                                <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* CAME Strategy */}
+                        <section className="mt-20">
+                            <div className="flex items-center gap-4 mb-10">
+                                <div className="h-10 w-1.5 bg-primary rounded-full"></div>
+                                <h3 className="text-3xl font-bold text-[#1F2937] tracking-tight">Estrategia CAME</h3>
+                            </div>
+                            <div className="grid grid-cols-1 gap-6">
+                                {[
+                                    { letter: 'C', color: 'orange', title: 'Corregir: Gamificación de Rutinas', desc: 'Transformar procesos operativos en retos para mitigar el aburrimiento y mantener el foco constante.', tag: 'Prioridad Alta' },
+                                    { letter: 'A', color: 'red', title: 'Afrontar: Kit de Contingencia', desc: 'Sistemas de redundancia y flujos offline para minimizar el impacto de posibles fallas técnicas externas.', tag: 'Prioridad Media' },
+                                    { letter: 'M', color: 'blue', title: 'Mantener: Liderazgo Técnico', desc: 'Reforzar el perfil profesional mediante certificaciones continuas y participación activa en Open Source.', tag: 'Sostenimiento' },
+                                    { letter: 'E', color: 'emerald', title: 'Explotar: Automatización con IA', desc: 'Crear frameworks propios para acelerar el delivery de proyectos de digitalización para PYMES.', tag: 'Oportunidad' }
+                                ].map((strat, i) => (
+                                    <div key={i} className={`glass-card rounded-[32px] p-8 flex flex-col md:flex-row md:items-center gap-8 border-l-[6px] border-l-${strat.color}-500`}>
+                                        <div className={`flex-none w-20 h-20 rounded-2xl bg-${strat.color}-50 text-${strat.color}-600 flex items-center justify-center text-4xl font-black border border-${strat.color}-100`}>
+                                            {strat.letter}
+                                        </div>
+                                        <div className="flex-grow">
+                                            <h4 className="text-xl font-bold text-[#1F2937] mb-2">{strat.title}</h4>
+                                            <p className="text-gray-500">{strat.desc}</p>
+                                        </div>
+                                        <div className={`flex-none px-6 py-2 bg-${strat.color}-50 border border-${strat.color}-100 rounded-full text-[10px] font-bold text-${strat.color}-600 tracking-widest uppercase`}>
+                                            {strat.tag}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+
+                        {/* Metrics Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
+                            <div className="glass-card p-8 rounded-[32px] border-t-4 border-t-primary">
+                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-4">Índice de Resiliencia</p>
+                                <div className="flex items-end justify-between">
+                                    <span className="text-4xl font-black text-[#1F2937]">94%</span>
+                                    <span className="text-emerald-600 text-sm font-bold flex items-center gap-1">
+                                        <span className="material-symbols-outlined text-sm">trending_up</span> +3.2%
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="glass-card p-8 rounded-[32px]">
+                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-4">Puntos de Atención</p>
+                                <div className="flex items-end justify-between">
+                                    <span className="text-4xl font-black text-[#1F2937]">03</span>
+                                    <span className="text-gray-500 text-sm font-semibold uppercase tracking-wider">Críticos</span>
+                                </div>
+                            </div>
+                            <div className="bg-primary p-8 rounded-[32px] shadow-xl shadow-blue-200">
+                                <p className="text-[10px] font-bold text-blue-100 uppercase tracking-[0.2em] mb-4">Estatus General</p>
+                                <div className="flex items-center gap-3">
+                                    <div className="w-3 h-3 bg-white rounded-full animate-pulse shadow-sm"></div>
+                                    <span className="text-xl font-bold text-white">Optimización Activa</span>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                    <Footer isDashboard={true} />
+                </div>
+            );
+        };
+
+        const App = () => {
+            return (
+                <MemoryRouter>
+                    <Routes>
+                        <Route path="/" element={<PortfolioPage />} />
+                        <Route path="/dashboard" element={<DashboardPage />} />
+                    </Routes>
+                </MemoryRouter>
+            );
+        };
+
+        const root = createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
